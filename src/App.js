@@ -1,20 +1,6 @@
 import React from 'react';
 import './app.css';
 
-const todoList = [
-  {
-    task: 'Get train to Sheffield',
-    id: 0,
-    completed: false 
-  },
-  {
-    task: 'Drink a coffee',
-    id: 1,
-    completed: false
-  }
-]
-
-
 class App extends React.Component {
   // you will need a place to store your state in this component.
   // design `App` to be the parent component of your application.
@@ -22,7 +8,7 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      todos: todoList,
+      todos: JSON.parse(localStorage.getItem("todos")) || [],
       todoText: "",
       searchText: ""
     }
@@ -36,6 +22,7 @@ class App extends React.Component {
         todoText: ""
       }
     })
+    window.localStorage.setItem("todos", JSON.stringify(this.state.todos))
   }
 
   setTodo = (event) => {
@@ -80,6 +67,8 @@ class App extends React.Component {
 
 
   render() {
+    const localStorageTodos = JSON.parse(localStorage.getItem("todos"));
+    console.log(localStorageTodos)
     return (
       <div>
         <h2>Todo App</h2>
