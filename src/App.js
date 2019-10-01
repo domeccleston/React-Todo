@@ -1,95 +1,119 @@
-import React from 'react';
-import './app.css';
+import React from "react";
+import "./app.css";
 
 class App extends React.Component {
   // you will need a place to store your state in this component.
   // design `App` to be the parent component of your application.
   // this component is going to take care of state, and any change handlers you need to work with your state
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       todos: JSON.parse(localStorage.getItem("todos")) || [],
       todoText: "",
       searchText: ""
-    }
+    };
   }
 
-  addTodo = (event) => {
-    event.preventDefault()
+  addTodo = event => {
+    event.preventDefault();
     this.setState(currentState => {
       return {
-        todos: currentState.todos.concat({task: this.state.todoText, id: Date.now(), completed: false}),
+        todos: currentState.todos.concat({
+          task: this.state.todoText,
+          id: Date.now(),
+          completed: false
+        }),
         todoText: ""
-      }
-    })
-    window.localStorage.setItem("todos", JSON.stringify(this.state.todos))
-  }
+      };
+    });
+    window.localStorage.setItem("todos", JSON.stringify(this.state.todos));
+  };
 
-  setTodo = (event) => {
+  setTodo = event => {
     this.setState({
       todoText: event.target.value
     });
-  }
+  };
 
-  setSearchText = (event) => {
+  setSearchText = event => {
     this.setState({
       searchText: event.target.value
     });
-  }
+  };
 
   checkTodo = (id, event) => {
     this.setState(currentState => {
       return {
         todos: currentState.todos.map(todo => {
           if (todo.id !== id) return todo;
-          return {id: todo.id, task: todo.task, completed:  todo.completed === true ? false : true}
+          return {
+            id: todo.id,
+            task: todo.task,
+            completed: todo.completed === true ? false : true
+          };
         })
-      }
-    })
-  }
+      };
+    });
+  };
 
-  filterTodos = (event) => {
+  filterTodos = event => {
     event.preventDefault();
     this.setState(currentState => {
       return {
-        todos: currentState.todos.filter(todo => todo.task.includes(currentState.searchText))
-      }
-    })
-  }
+        todos: currentState.todos.filter(todo =>
+          todo.task.includes(currentState.searchText)
+        )
+      };
+    });
+  };
 
-  clearTodos = (event) => {
+  clearTodos = event => {
     event.preventDefault();
     this.setState(currentState => {
       return {
         todos: currentState.todos.filter(todo => !todo.completed)
-      }
-    })
-  }
-
+      };
+    });
+  };
 
   render() {
     const localStorageTodos = JSON.parse(localStorage.getItem("todos"));
-    console.log(localStorageTodos)
+    console.log(localStorageTodos);
     return (
       <div>
         <h2>Todo App</h2>
         <form>
-          <input type="text" placeholder="Search Todos" onChange={(event) => this.setSearchText(event)}/>
-          <button onClick={(event) => this.filterTodos(event)}>Search</button>
-          <br></br><br></br>
+          <input
+            type="text"
+            placeholder="Search Todos"
+            onChange={event => this.setSearchText(event)}
+          />
+          <button onClick={event => this.filterTodos(event)}>Search</button>
+          <br></br>
+          <br></br>
         </form>
         <form>
-          <input type="text" placeholder="Enter Todos" onChange={(event) => this.setTodo(event)}/>
-          <button onClick={(event) => this.addTodo(event)}>Add</button>
-          <button onClick={(event) => this.clearTodos(event)}>Clear Todos</button>
+          <input
+            type="text"
+            placeholder="Enter Todos"
+            onChange={event => this.setTodo(event)}
+          />
+          <button onClick={event => this.addTodo(event)}>Add</button>
+          <button onClick={event => this.clearTodos(event)}>Clear Todos</button>
         </form>
-        <div className ="todos-container">
-           {this.state.todos.map(todo => (
-             <>
-            <h2 className={todo.completed ? "todo-checked" : "todo-unchecked"} key={todo.id} onClick={(event) => this.checkTodo(todo.id, event)}>{todo.task}</h2>
+        <div className="todos-container">
+          {this.state.todos.map(todo => (
+            <>
+              <h2
+                className={todo.completed ? "todo-checked" : "todo-unchecked"}
+                key={todo.id}
+                onClick={event => this.checkTodo(todo.id, event)}
+              >
+                {todo.task}
+              </h2>
             </>
           ))}
-        </div> 
+        </div>
       </div>
     );
   }
