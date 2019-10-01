@@ -1,5 +1,8 @@
 import React from "react";
 import "./app.css";
+import TodoList from './components/TodoComponents/TodoList';
+import TodoForm from './components/TodoComponents/TodoForm';
+import SearchForm from './components/TodoComponents/SearchForm';
 
 class App extends React.Component {
   // you will need a place to store your state in this component.
@@ -77,43 +80,12 @@ class App extends React.Component {
   };
 
   render() {
-    const localStorageTodos = JSON.parse(localStorage.getItem("todos"));
-    console.log(localStorageTodos);
     return (
       <div>
         <h2>Todo App</h2>
-        <form>
-          <input
-            type="text"
-            placeholder="Search Todos"
-            onChange={event => this.setSearchText(event)}
-          />
-          <button onClick={event => this.filterTodos(event)}>Search</button>
-          <br></br>
-          <br></br>
-        </form>
-        <form>
-          <input
-            type="text"
-            placeholder="Enter Todos"
-            onChange={event => this.setTodo(event)}
-          />
-          <button onClick={event => this.addTodo(event)}>Add</button>
-          <button onClick={event => this.clearTodos(event)}>Clear Todos</button>
-        </form>
-        <div className="todos-container">
-          {this.state.todos.map(todo => (
-            <>
-              <h2
-                className={todo.completed ? "todo-checked" : "todo-unchecked"}
-                key={todo.id}
-                onClick={event => this.checkTodo(todo.id, event)}
-              >
-                {todo.task}
-              </h2>
-            </>
-          ))}
-        </div>
+        <SearchForm setSearchText={this.setSearchText} filterTodos={this.filterTodos}/>
+        <TodoForm setTodo={this.setTodo} addTodo={this.addTodo} clearTodos={this.clearTodos}/>
+        <TodoList todos={this.state.todos} checkTodo={this.checkTodo}/>
       </div>
     );
   }
