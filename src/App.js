@@ -42,7 +42,7 @@ class App extends React.Component {
       return {
         todos: currentState.todos.map(todo => {
           if (todo.id !== id) return todo;
-          return {id: todo.id, task: todo.task, completed: true}
+          return {id: todo.id, task: todo.task, completed:  todo.completed === true ? false : true}
         })
       }
     })
