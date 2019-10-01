@@ -57,10 +57,11 @@ class App extends React.Component {
     })
   }
 
-  clearTodo = (id, event) => {
+  clearTodos = (event) => {
+    event.preventDefault();
     this.setState(currentState => {
       return {
-        todos: currentState.todos.filter(todo => todo.id !== id)
+        todos: currentState.todos.filter(todo => !todo.completed)
       }
     })
   }
@@ -80,12 +81,12 @@ class App extends React.Component {
         <form>
           <input type="text" placeholder="Enter Todos" onChange={(event) => this.setTodo(event)}/>
           <button onClick={(event) => this.addTodo(event)}>Add</button>
+          <button onClick={(event) => this.clearTodos(event)}>Clear Todos</button>
         </form>
         <div className ="todos-container">
            {this.state.todos.map(todo => (
              <>
             <h2 className={todo.completed ? "todo-checked" : "todo-unchecked"} key={todo.id} onClick={(event) => this.checkTodo(todo.id, event)}>{todo.task}</h2>
-            <button onClick={(event) => this.clearTodo(todo.id, event)}>Clear</button>
             </>
           ))}
         </div> 
